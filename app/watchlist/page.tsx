@@ -27,7 +27,7 @@ function AlertDialog({ stock, onClose }: { stock: WatchlistItem; onClose: () => 
             aria-modal="true"
         >
             <div
-                className="alert-dialog w-full rounded-xl border p-6 shadow-2xl"
+                className="glass-card w-full max-w-md p-6 text-gray-400"
                 onClick={(e) => e.stopPropagation()}
             >
                 <div className="mb-4 flex items-center justify-between">
@@ -103,7 +103,9 @@ export default function WatchlistPage() {
         return (
             <div className="watchlist-empty-container flex">
                 <div className="watchlist-empty">
-                    <Star className="watchlist-star" />
+                    <span className="mb-4 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-yellow-400/20 to-orange-500/10 ring-1 ring-yellow-500/20">
+                        <Star className="h-10 w-10 text-yellow-500" />
+                    </span>
                     <h1 className="empty-title">Your watchlist is empty</h1>
                     <p className="empty-description">
                         Search for a stock (⌘K) and add it to your watchlist to
@@ -122,10 +124,10 @@ export default function WatchlistPage() {
             <div className="watchlist-container">
                 <section className="watchlist">
                     <h1 className="watchlist-title">Watchlist</h1>
-                    <div className="watchlist-table overflow-x-auto">
+                    <div className="glass-card overflow-hidden overflow-x-auto">
                         <table className="w-full text-left">
                             <thead>
-                                <tr className="table-header-row text-sm">
+                                                <tr className="border-b border-white/[0.06] bg-white/[0.03] text-sm text-gray-500">
                                     <th className="table-header px-3 py-3 font-medium">Symbol</th>
                                     <th className="px-3 py-3 font-medium">Company</th>
                                     <th className="hidden px-3 py-3 font-medium md:table-cell">Exchange</th>
@@ -184,7 +186,7 @@ export default function WatchlistPage() {
                         <Bell className="h-5 w-5 text-yellow-500" />
                         Alerts
                     </h2>
-                    <div className="alert-list">
+                    <div className="glass-card flex max-h-[911px] w-full flex-1 flex-col gap-4 overflow-y-auto p-3">
                         {alerts.length === 0 && (
                             <p className="alert-empty">
                                 No alerts yet. Add one from your watchlist to

@@ -10,13 +10,15 @@ interface TradingViewWidgetProps {
     height?: number | string;
     className?: string;
     title?: string;
+    /** Render without the glass card frame (e.g. for the ticker tape). */
+    bare?: boolean;
 }
 
 /**
  * Generic TradingView embed. Injects the widget script into a container and
  * re-creates it whenever the config changes (e.g. navigating between symbols).
  */
-function TradingViewWidget({ script, config, height = 400, className, title }: TradingViewWidgetProps) {
+function TradingViewWidget({ script, config, height = 400, className, title, bare }: TradingViewWidgetProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const configJSON = JSON.stringify(config);
 
@@ -41,14 +43,30 @@ function TradingViewWidget({ script, config, height = 400, className, title }: T
         };
     }, [script, configJSON]);
 
+    const widgetEl = (
+        <div
+            className="tradingview-widget-container"
+            ref={containerRef}
+            style={{ height, width: "100%" }}
+        />
+    );
+
+    if (bare) {
+        return <section className={cn("w-full", className)}>{widgetEl}</section>;
+    }
+
     return (
-        <section className={cn("w-full", className)}>
-            {title && <h2 className="mb-3 text-lg font-semibold text-gray-100">{title}</h2>}
-            <div
-                className="tradingview-widget-container"
-                ref={containerRef}
-                style={{ height, width: "100%" }}
-            />
+        <section className={cn("glass-card glass-card-hover w-full overflow-hidden p-4", className)}>
+            {title && (
+                <div className="mb-3 flex items-center justify-between">
+                    <h2 className="text-lg font-bold text-gray-100">{title}</h2>
+                    <span className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-gray-500">
+                        <span className="glow-dot animate-pulse" />
+                        Live
+                    </span>
+                </div>
+            )}
+            {widgetEl}
         </section>
     );
 }

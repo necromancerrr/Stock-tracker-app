@@ -91,7 +91,7 @@ export default function SearchCommand() {
                     aria-label="Stock search"
                 >
                     <div
-                        className="w-full max-w-xl overflow-hidden rounded-xl border border-gray-600 bg-gray-800 shadow-2xl"
+                        className="glass-card w-full max-w-xl overflow-hidden !bg-gray-800/90"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="relative flex items-center border-b border-gray-600">

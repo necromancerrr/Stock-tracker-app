@@ -31,14 +31,24 @@ export default async function StockPage({ params }: StockPageProps) {
 
     return (
         <div className="container flex flex-col gap-6 py-8">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                    <h1 className="text-3xl font-bold text-gray-100">{upper}</h1>
-                    {listing && (
-                        <p className="mt-1 text-gray-500">
-                            {listing.name} · {listing.exchange}
-                        </p>
-                    )}
+            <div className="glass-card flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="flex items-center gap-4">
+                    <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400/20 via-blue-600/20 to-purple-500/20 text-xl font-extrabold text-teal-400 ring-1 ring-white/10">
+                        {upper.slice(0, 2)}
+                    </span>
+                    <div>
+                        <h1 className="text-3xl font-extrabold tracking-tight text-gray-100">
+                            ${upper}
+                        </h1>
+                        {listing && (
+                            <p className="mt-0.5 text-gray-500">
+                                {listing.name}
+                                <span className="ml-2 rounded-full bg-white/[0.06] px-2 py-0.5 text-xs font-medium text-gray-400">
+                                    {listing.exchange}
+                                </span>
+                            </p>
+                        )}
+                    </div>
                 </div>
                 <div className="w-full sm:w-64">
                     <WatchlistButton
