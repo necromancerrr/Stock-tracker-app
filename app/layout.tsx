@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +14,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SP tracker",
-  description: "Tracks real time stock price, get personalized alert and explore companies",
+  title: {
+    default: "SP Tracker — Real-time Stock Market Dashboard",
+    template: "%s | SP Tracker",
+  },
+  description:
+    "Track real-time stock prices, explore market heatmaps and company fundamentals, build a watchlist and set personalized price alerts.",
+  keywords: ["stocks", "market", "watchlist", "price alerts", "trading", "finance"],
 };
 
 export default function RootLayout({
@@ -25,9 +31,16 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        {children}
+        <Header />
+        <main className="flex-1">{children}</main>
+        <footer className="border-t border-gray-700 py-6">
+          <div className="container flex flex-col items-center justify-between gap-2 text-sm text-gray-500 sm:flex-row">
+            <p>© {new Date().getFullYear()} SP Tracker. Market data by TradingView.</p>
+            <p>For informational purposes only — not investment advice.</p>
+          </div>
+        </footer>
       </body>
     </html>
   );

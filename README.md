@@ -1,36 +1,56 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SP Tracker
 
-## Getting Started
+A real-time stock market dashboard built with Next.js 16, React 19 and Tailwind CSS v4.
 
-First, run the development server:
+![Dashboard](public/assets/images/dashboard.png)
+
+## Features
+
+- **Live market dashboard** — ticker tape, market overview, S&P 500 heatmap, top stories and market quotes powered by free TradingView widgets (no API key required).
+- **Stock search** — press `⌘K` / `Ctrl+K` anywhere to search 80+ popular tickers by symbol or company name with full keyboard navigation.
+- **Stock detail pages** — `/stocks/[symbol]` with an advanced interactive chart, technical analysis gauge, company profile, fundamentals and symbol-specific news.
+- **Watchlist** — add/remove stocks from any detail page; persisted in `localStorage` via a `useSyncExternalStore` store.
+- **Price alerts** — create above/below target-price alerts per watched stock and manage them from the watchlist page.
+- Fully responsive dark UI.
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Production
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The app is fully static/client-side (no server secrets or environment variables required), so it deploys as-is to Vercel, Netlify or any Node host.
 
-## Learn More
+## Tech stack
 
-To learn more about Next.js, take a look at the following resources:
+- [Next.js 16](https://nextjs.org) (App Router, React Compiler enabled)
+- [React 19](https://react.dev)
+- [Tailwind CSS v4](https://tailwindcss.com) + shadcn/ui-style components
+- [TradingView widgets](https://www.tradingview.com/widget/) for market data
+- [lucide-react](https://lucide.dev) icons
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+  page.tsx                 # Market dashboard
+  stocks/[symbol]/page.tsx # Stock detail page
+  watchlist/page.tsx       # Watchlist + price alerts
+components/
+  Header.tsx, SearchCommand.tsx, TradingViewWidget.tsx, WatchlistButton.tsx
+lib/
+  constants.ts             # Nav + searchable stock listings
+  watchlist.ts             # localStorage-backed watchlist/alerts store
+```
 
-## Deploy on Vercel
+## Disclaimer
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Market data is provided by TradingView for informational purposes only and is not investment advice.
