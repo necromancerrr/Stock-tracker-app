@@ -1,7 +1,5 @@
-import Link from "next/link";
-import { ArrowRight, Flame, Sparkles } from "lucide-react";
 import TradingViewWidget from "@/components/TradingViewWidget";
-import { Button } from "@/components/ui/button";
+import Hero from "@/components/Hero";
 
 const WIDGET_THEME = {
     colorTheme: "dark",
@@ -9,8 +7,6 @@ const WIDGET_THEME = {
     locale: "en",
     isTransparent: true,
 };
-
-const TRENDING = ["NVDA", "TSLA", "AAPL", "PLTR", "COIN", "AMD", "META", "SMCI"];
 
 const Home = () => {
     return (
@@ -36,54 +32,9 @@ const Home = () => {
                 }}
             />
 
-            {/* Hero */}
-            <section className="flex flex-col items-start gap-5 py-8 text-left md:py-12">
-                <span className="pill flex items-center gap-2 border border-teal-400/20 bg-teal-400/10 text-teal-400">
-                    <Sparkles className="h-3.5 w-3.5" />
-                    Real-time markets, zero noise
-                </span>
-                <h1 className="max-w-3xl text-4xl font-extrabold leading-tight tracking-tight text-gray-100 md:text-6xl">
-                    Watch the market{" "}
-                    <span className="gradient-text">like a pro.</span>
-                </h1>
-                <p className="max-w-xl text-lg text-gray-500">
-                    Live charts, heatmaps and news — build your watchlist, set
-                    price alerts, and never miss a move.
-                </p>
-                <div className="flex flex-wrap items-center gap-3">
-                    <Button asChild className="yellow-btn px-6">
-                        <Link href="/watchlist">
-                            Build your watchlist
-                            <ArrowRight className="h-4 w-4" />
-                        </Link>
-                    </Button>
-                    <span className="text-sm text-gray-500">
-                        or press{" "}
-                        <kbd className="rounded-md border border-white/10 bg-gray-800 px-2 py-1 font-mono text-xs text-gray-400">
-                            ⌘K
-                        </kbd>{" "}
-                        to search any stock
-                    </span>
-                </div>
-                {/* Trending chips */}
-                <div className="mt-2 flex flex-wrap items-center gap-2">
-                    <span className="flex items-center gap-1.5 text-sm font-semibold text-orange-500">
-                        <Flame className="h-4 w-4" />
-                        Trending
-                    </span>
-                    {TRENDING.map((symbol) => (
-                        <Link
-                            key={symbol}
-                            href={`/stocks/${symbol}`}
-                            className="pill border border-white/[0.08] bg-gray-800/70 font-mono text-gray-400 hover:border-teal-400/40 hover:bg-teal-400/10 hover:text-teal-400"
-                        >
-                            ${symbol}
-                        </Link>
-                    ))}
-                </div>
-            </section>
+            <Hero />
 
-            <div className="grid w-full gap-6 grid-cols-1 xl:grid-cols-3">
+            <div id="market" className="grid w-full scroll-mt-24 gap-6 grid-cols-1 xl:grid-cols-3">
                 <TradingViewWidget
                     title="Market Overview"
                     script="embed-widget-market-overview"
@@ -148,7 +99,7 @@ const Home = () => {
                 />
             </div>
 
-            <div className="grid w-full gap-6 grid-cols-1 xl:grid-cols-2">
+            <div id="news" className="grid w-full scroll-mt-24 gap-6 grid-cols-1 xl:grid-cols-2">
                 <TradingViewWidget
                     title="Top Stories"
                     script="embed-widget-timeline"
