@@ -39,7 +39,7 @@ export default function Hero() {
     const router = useRouter();
     const { displayed, done } = useTypewriter(TYPED_TEXT);
     const [pillsVisible, setPillsVisible] = useState(false);
-    const glowRef = useRef<HTMLDivElement>(null);
+    const sectionRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
         const t = setTimeout(() => setPillsVisible(true), 400);
@@ -52,8 +52,8 @@ export default function Hero() {
         const onMove = (e: MouseEvent) => {
             cancelAnimationFrame(raf);
             raf = requestAnimationFrame(() => {
-                glowRef.current?.style.setProperty("--mx", `${e.clientX}px`);
-                glowRef.current?.style.setProperty("--my", `${e.clientY}px`);
+                sectionRef.current?.style.setProperty("--mx", `${e.clientX}px`);
+                sectionRef.current?.style.setProperty("--my", `${e.clientY}px`);
             });
         };
         window.addEventListener("mousemove", onMove);
@@ -74,10 +74,28 @@ export default function Hero() {
         document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
     return (
-        <section className="relative flex min-h-[85vh] flex-col justify-end overflow-hidden pb-16 md:justify-center md:pb-0">
+        <section
+            ref={sectionRef}
+            className="relative flex min-h-[85vh] flex-col justify-end overflow-hidden pb-16 md:justify-center md:pb-0"
+        >
+            {/* Parallax grid background */}
+            <svg
+                aria-hidden
+                className="pointer-events-none absolute -inset-12 h-[calc(100%+6rem)] w-[calc(100%+6rem)] opacity-10"
+                style={{
+                    transform:
+                        "translate(calc(var(--mx, 50vw) / 60 - 12px), calc(var(--my, 50vh) / 60 - 8px))",
+                }}
+            >
+                <defs>
+                    <pattern id="hero-grid" width="48" height="48" patternUnits="userSpaceOnUse">
+                        <path d="M 48 0 L 0 0 0 48" fill="none" stroke="#64748b" strokeWidth="0.6" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#hero-grid)" />
+            </svg>
             {/* Mouse-following glow */}
             <div
-                ref={glowRef}
                 aria-hidden
                 className="pointer-events-none fixed inset-0 -z-10"
                 style={{
@@ -103,10 +121,11 @@ export default function Hero() {
 
                 {/* Typewriter */}
                 <p
-                    className="mb-8 font-medium text-gray-100"
+                    className="mb-8 text-gray-100"
                     style={{
-                        fontSize: "clamp(22px, 5vw, 40px)",
-                        lineHeight: 1.25,
+                        fontFamily: "var(--font-instrument-serif)",
+                        fontSize: "clamp(26px, 5.5vw, 48px)",
+                        lineHeight: 1.2,
                         minHeight: "2.6em",
                     }}
                 >
@@ -130,7 +149,7 @@ export default function Hero() {
                             key={label}
                             type="button"
                             onClick={onClick}
-                            className="mx-[0.2em] mb-[0.4em] inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full border border-white/10 bg-white px-4 py-[0.35em] text-[13px] font-medium text-gray-900 transition-colors duration-200 hover:bg-teal-400 sm:px-5 sm:text-[15px]"
+                            className="mx-[0.2em] mb-[0.4em] inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-full border border-black/10 bg-white px-4 py-[0.35em] text-[13px] font-medium text-[#141414] transition-colors duration-200 hover:bg-teal-400 dark:border-white/10 sm:px-5 sm:text-[15px]"
                         >
                             {label}
                         </button>
@@ -142,7 +161,7 @@ export default function Hero() {
                                 new KeyboardEvent("keydown", { key: "k", ctrlKey: true })
                             )
                         }
-                        className="mx-[0.2em] mb-[0.4em] inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full border border-white/40 bg-transparent px-4 py-[0.35em] text-[13px] font-medium text-white transition-colors duration-200 hover:bg-white hover:text-gray-900 sm:px-5 sm:text-[15px]"
+                        className="mx-[0.2em] mb-[0.4em] inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-full border border-gray-400/50 bg-transparent px-4 py-[0.35em] text-[13px] font-medium text-gray-100 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900 sm:px-5 sm:text-[15px]"
                     >
                         Search anything
                         <kbd className="rounded border border-current/30 px-1.5 font-mono text-[11px]">

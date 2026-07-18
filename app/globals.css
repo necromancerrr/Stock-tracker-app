@@ -113,15 +113,40 @@
 }
 
 /* === CUSTOM COLOR THEME === */
-@theme {
-    /* Extended Gray Scale */
-    --color-gray-900: #050505;
-    --color-gray-800: #141414;
-    --color-gray-700: #212328;
-    --color-gray-600: #30333A;
-    --color-gray-500: #9095A1;
-    --color-gray-400: #CCDADC;
+/* Surface scale is variable-driven so the whole app flips between the dark
+   and light themes by toggling the .dark class on <html>. */
+@theme inline {
+    --color-gray-900: var(--surface-900);
+    --color-gray-800: var(--surface-800);
+    --color-gray-700: var(--surface-700);
+    --color-gray-600: var(--surface-600);
+    --color-gray-500: var(--surface-500);
+    --color-gray-400: var(--surface-400);
+    --color-gray-100: var(--surface-100);
+}
 
+:root {
+    /* Light theme */
+    --surface-900: #f5f6f8;
+    --surface-800: #ffffff;
+    --surface-700: #e9ebef;
+    --surface-600: #d8dbe1;
+    --surface-500: #5f6672;
+    --surface-400: #2a2f3a;
+    --surface-100: #0e1116;
+}
+
+.dark {
+    --surface-900: #050505;
+    --surface-800: #141414;
+    --surface-700: #212328;
+    --surface-600: #30333A;
+    --surface-500: #9095A1;
+    --surface-400: #CCDADC;
+    --surface-100: #f3f5f7;
+}
+
+@theme {
     /* Vibrant Colors */
     --color-blue-600: #5862FF;
     --color-yellow-400: #FDD458;
@@ -137,13 +162,63 @@
         @apply border-border outline-ring/50;
     }
     body {
-        @apply bg-gray-900 text-foreground;
+        @apply bg-gray-900 text-gray-400;
+        background-image:
+            radial-gradient(60rem 40rem at 85% -10%, rgba(88, 98, 255, 0.07), transparent 60%),
+            radial-gradient(50rem 35rem at -10% 20%, rgba(15, 237, 190, 0.06), transparent 60%),
+            radial-gradient(40rem 30rem at 50% 120%, rgba(209, 59, 255, 0.05), transparent 60%);
+        background-attachment: fixed;
+    }
+    .dark body {
         background-image:
             radial-gradient(60rem 40rem at 85% -10%, rgba(88, 98, 255, 0.14), transparent 60%),
             radial-gradient(50rem 35rem at -10% 20%, rgba(15, 237, 190, 0.10), transparent 60%),
             radial-gradient(40rem 30rem at 50% 120%, rgba(209, 59, 255, 0.08), transparent 60%);
-        background-attachment: fixed;
     }
+}
+
+/* Frosted "liquid glass" pill (nav, CTAs) with gradient hairline border */
+.liquid-glass {
+    background: rgba(255, 255, 255, 0.01);
+    background-blend-mode: luminosity;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: none;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+.liquid-glass::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.4px;
+    background: linear-gradient(180deg,
+        rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+        rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+        rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+}
+html:not(.dark) .liquid-glass {
+    background: rgba(255, 255, 255, 0.55);
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 1px 8px rgba(15, 23, 42, 0.06);
+}
+html:not(.dark) .liquid-glass::before {
+    background: linear-gradient(180deg,
+        rgba(15,23,42,0.18) 0%, rgba(15,23,42,0.06) 20%,
+        rgba(15,23,42,0) 40%, rgba(15,23,42,0) 60%,
+        rgba(15,23,42,0.06) 80%, rgba(15,23,42,0.18) 100%);
+}
+
+/* Light-theme refinements for glass surfaces */
+html:not(.dark) .glass-card {
+    background: rgba(255, 255, 255, 0.78);
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.07);
 }
 
 @layer utilities {
@@ -166,7 +241,7 @@
         @apply mx-auto max-w-screen-2xl px-4 md:px-6 lg:px-8;
     }
     .yellow-btn {
-        @apply h-12 cursor-pointer bg-gradient-to-b from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-gray-950 font-medium text-base rounded-lg shadow-lg disabled:opacity-50;
+        @apply h-12 cursor-pointer bg-gradient-to-b from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-400 text-[#141414] font-medium text-base rounded-lg shadow-lg disabled:opacity-50;
     }
     .home-wrapper {
         @apply text-gray-400 flex-col gap-4 md:gap-10 items-center sm:items-start;
@@ -208,7 +283,7 @@
         @apply text-sm font-medium text-gray-400;
     }
     .form-input {
-        @apply h-12 px-3 py-3 text-white text-base placeholder:text-gray-500 border-gray-600 bg-gray-800 rounded-lg focus:!border-yellow-500 focus:ring-0;
+        @apply h-12 px-3 py-3 text-gray-100 text-base placeholder:text-gray-500 border-gray-600 bg-gray-800 rounded-lg focus:!border-yellow-500 focus:ring-0;
     }
     .select-trigger {
         @apply w-full !h-12 px-3 py-3 text-base border-gray-600 bg-gray-800 text-white rounded-lg focus:!border-yellow-500 focus:ring-0;
@@ -274,10 +349,10 @@
         @apply w-full grid-cols-1 gap-6 xl:grid-cols-3 space-y-6 sm:space-y-8;
     }
     .watchlist-btn {
-        @apply bg-yellow-500 text-base hover:bg-yellow-500 text-gray-900 w-full rounded h-11 font-semibold cursor-pointer;
+        @apply bg-yellow-500 text-base hover:bg-yellow-500 text-[#141414] w-full rounded h-11 font-semibold cursor-pointer;
     }
     .watchlist-remove {
-        @apply bg-red-500! hover:bg-red-500! text-gray-900!
+        @apply bg-red-500! hover:bg-red-500! text-[#141414]!
     }
     .watchlist-empty-container {
         @apply container gap-8 flex-col items-center md:mt-10 p-6 text-center;
@@ -483,6 +558,13 @@
     border: 1px solid #30333A;
     border-radius: 8px !important;
     overflow: hidden !important;
+}
+
+/* Light theme: TradingView containers go white */
+html:not(.dark) .tradingview-widget-container,
+html:not(.dark) .tradingview-widget-container__widget,
+html:not(.dark) .tradingview-widget-container iframe {
+    background-color: #ffffff !important;
 }
 
 /* Custom scrollbar that shows on hover */

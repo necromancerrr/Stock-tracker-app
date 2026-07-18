@@ -1,7 +1,20 @@
 "use client";
 
-import { memo, useEffect, useRef } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+
+function useIsDark() {
+    const [dark, setDark] = useState(true);
+    useEffect(() => {
+        const el = document.documentElement;
+        const update = () => setDark(el.classList.contains("dark"));
+        update();
+        const observer = new MutationObserver(update);
+        observer.observe(el, { attributes: true, attributeFilter: ["class"] });
+        return () => observer.disconnect();
+    }, []);
+    return dark;
+}
 
 interface TradingViewWidgetProps {
     /** Widget script name, e.g. "embed-widget-market-overview" */
@@ -20,7 +33,11 @@ interface TradingViewWidgetProps {
  */
 function TradingViewWidget({ script, config, height = 400, className, title, bare }: TradingViewWidgetProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const configJSON = JSON.stringify(config);
+    const isDark = useIsDark();
+    const configJSON = JSON.stringify({
+        ...config,
+        colorTheme: isDark ? "dark" : "light",
+    });
 
     useEffect(() => {
         const container = containerRef.current;
